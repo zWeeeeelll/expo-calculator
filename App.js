@@ -8,6 +8,7 @@ export default function App() {
   const [number, setNumber] = useState("")
   const [isNumber, setIsNumber] = useState()
   const [fonsizeValue, setfonsizeValue] = useState(80)
+  
   useEffect(() => {
     if (number.length > 9) {
       setfonsizeValue(45)
@@ -72,7 +73,7 @@ export default function App() {
               }
             }
             else {
-              setNumber(value => "" + value.slice(0, length - 1) + newNumb)
+              setNumber(value => value + newNumb)
             }
           }
         }
@@ -105,6 +106,7 @@ export default function App() {
 
 
   const sonucFilter = (number) => {
+
     if (number === "" || number === "0") {
       return "0"
     }
@@ -128,6 +130,9 @@ export default function App() {
     setNumber( value => "")
   }
 
+  let lastNumber = '';
+
+
   const sonucGoster = () => {
     
     setIsNumber(true)
@@ -137,19 +142,29 @@ export default function App() {
           sonucFilter(number)
         ))
       )
+      lastNumber = String(eval(sonucFilter(number)));
+          console.log(lastNumber);
     } catch (error) {
       setNumber("Error")
       setIsNumber(true)
     }
     
   }
+console.log(lastNumber);
 
+const history = () => {
+    if(eval(number) !== NaN || eval(number) !== undefined){
+      return eval(number);
+    }
+    return
+}
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="white" />
       <View style={styles.inpusView}>
         <Text style={{ fontSize: fonsizeValue, color: "rgb(87,114,168)", paddingRight: 40, }}>{number}</Text>
+        <Text style={{ fontSize: fonsizeValue, color: "rgb(87,114,168)", paddingRight: 40, }}>{lastNumber}</Text>
       </View>
       <View styles={styles.buttonsViewContainer}>
         <View style={styles.buttonsView}>
