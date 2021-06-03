@@ -6,6 +6,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function App() {
   const [number, setNumber] = useState("")
+  const [lastNumber, setLastNumber] = useState("")
   const [isNumber, setIsNumber] = useState()
   const [fonsizeValue, setfonsizeValue] = useState(80)
   
@@ -20,14 +21,11 @@ export default function App() {
       setfonsizeValue(80)
     }
     console.log("number : ", number)
-    //isNaN() sayı gelirse false döner
   }, [number])
 
   useEffect(() => {
     setIsNumber(false)
   }, [])
-
-  //console.log("aaaaa:")
 
   const changeNumber = (newNumb) => {
     let length = number.length;
@@ -80,17 +78,17 @@ export default function App() {
         else {
           if (newNumb === ".") {
             let i = length - 1
-            let isBla = false
+            let isNull = false
             while (i >= 0) {
               if (isNaN(number[i])) {
                 if (number[i] === ".") {
-                  isBla = true
+                  isNull = true
                 }
                 break
               }
               i--
             }
-            if (!isBla) {
+            if (!isNull) {
               setNumber(value => "" + value + newNumb)
             }
           }
@@ -105,59 +103,34 @@ export default function App() {
   }
 
 
-  // const sonucFilter = (number) => {
-
-  //   if (number === "" || number === "0") {
-  //     return "0"
-  //   }
-  //   else {
-  //     if (isNaN(number[number.length - 1]) && number[number.length - 1] !== "%") {
-  //       return number.slice(0, number.length - 1)
-  //     }
-  //     else {
-  //       if(number[number.length - 1] !== "%"){
-  //         return number.replace(/%/g, "*1/100*")
-  //       }
-  //       else{
-  //         return number.replace(/%/g, "*1/100")
-  //       }
-  //     }
-  //   }
-  // }
+  
 
   const del = () => {
-    //setNumber(value => "" + value.slice(0, value.length - 1))
     setNumber( value => "")
+    setLastNumber( value => "")
   }
 
-  const sonucGoster = () => {
+  const result = () => {
     
     setIsNumber(true)
     try {
       setNumber(
         String(eval(number))
       )
-      
+     setLastNumber(String(eval(number)))
     } catch (error) {
       setNumber("Error")
-      setIsNumber(true)
+      return setIsNumber(true)
     }
     
   }
-
-const history = () => {
-    if(eval(number) !== NaN || eval(number) !== undefined){
-      return eval(number);
-    }
-    return
-}
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="white" />
       <View style={styles.inpusView}>
         <Text style={{ fontSize: fonsizeValue, color: "rgb(87,114,168)", paddingRight: 40, }}>{number}</Text>
-        <Text style={{ fontSize: 45, color: "rgb(87,114,168)", paddingRight: 40, opacity: 0.5 }}>{number}</Text>
+        <Text style={{ fontSize: 45, color: "rgb(87,114,168)", paddingRight: 40, opacity: 0.5 }}>{lastNumber}</Text>
       </View>
       <View styles={styles.buttonsViewContainer}>
         <View style={styles.buttonsView}>
@@ -191,7 +164,7 @@ const history = () => {
           <TouchableOpacity onPress={() => changeNumber(0)}><View style={[styles.buttonsBlack, { width: (width / 4), alignItems: "flex-start", paddingLeft: (width / 4) / 2 }]}><Text style={styles.buttonTextWhite}>0</Text></View></TouchableOpacity>
           <TouchableOpacity onPress={() => changeNumber(".")}><View style={styles.buttonsBlack}><Text style={styles.buttonTextWhite}>.</Text></View></TouchableOpacity>
           <TouchableOpacity onPress={() => del()}><View style={styles.buttonsGray}><Text style={styles.buttonText}>{'<x]'}</Text></View></TouchableOpacity>
-          <TouchableOpacity onPress={() => sonucGoster()}><View style={[styles.buttonsBlack, { backgroundColor: "orange" }]}><Text style={[styles.buttonText, { color: "white" }]}>=</Text></View></TouchableOpacity>
+          <TouchableOpacity onPress={() => result()}><View style={[styles.buttonsBlack, { backgroundColor: "orange" }]}><Text style={[styles.buttonText, { color: "white" }]}>=</Text></View></TouchableOpacity>
         </View>
       </View>
 
@@ -212,28 +185,21 @@ const styles = StyleSheet.create({
     alignItems: "flex-end"
   },
   buttonsViewContainer: {
-    //padding: 40,
     borderWidth: 1,
     borderColor: "blue",
   },
   buttonsView: {
-    //paddingHorizontal: 5,
-    //padding: 2,
     flexDirection: "row",
     width: width,
-    //justifyContent: "space-between"//komple o bloğa yayar
   },
   buttonsGray: {
-    //borderRadius: (width / 4 - 25) / 2,
     width: width / 4,
     height: width / 4,
     backgroundColor: "rgb(247,248,251)",
     alignItems: "center",
     justifyContent: "center",
-    //color: "rgb(87,114,168)"
   },
   buttonsBlack: {
-    //borderRadius: (width / 4 - 25) / 2,
     width: width / 4,
     height: width / 4,
     backgroundColor: "rgb(247,248,251)",
