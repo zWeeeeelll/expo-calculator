@@ -105,52 +105,45 @@ export default function App() {
   }
 
 
-  const sonucFilter = (number) => {
+  // const sonucFilter = (number) => {
 
-    if (number === "" || number === "0") {
-      return "0"
-    }
-    else {
-      if (isNaN(number[number.length - 1]) && number[number.length - 1] !== "%") {
-        return number.slice(0, number.length - 1)
-      }
-      else {
-        if(number[number.length - 1] !== "%"){
-          return number.replace(/%/g, "*1/100*")
-        }
-        else{
-          return number.replace(/%/g, "*1/100")
-        }
-      }
-    }
-  }
+  //   if (number === "" || number === "0") {
+  //     return "0"
+  //   }
+  //   else {
+  //     if (isNaN(number[number.length - 1]) && number[number.length - 1] !== "%") {
+  //       return number.slice(0, number.length - 1)
+  //     }
+  //     else {
+  //       if(number[number.length - 1] !== "%"){
+  //         return number.replace(/%/g, "*1/100*")
+  //       }
+  //       else{
+  //         return number.replace(/%/g, "*1/100")
+  //       }
+  //     }
+  //   }
+  // }
 
   const del = () => {
     //setNumber(value => "" + value.slice(0, value.length - 1))
     setNumber( value => "")
   }
 
-  let lastNumber = '';
-
-
   const sonucGoster = () => {
     
     setIsNumber(true)
     try {
       setNumber(
-        String(eval(
-          sonucFilter(number)
-        ))
+        String(eval(number))
       )
-      lastNumber = String(eval(sonucFilter(number)));
-          console.log(lastNumber);
+      
     } catch (error) {
       setNumber("Error")
       setIsNumber(true)
     }
     
   }
-console.log(lastNumber);
 
 const history = () => {
     if(eval(number) !== NaN || eval(number) !== undefined){
@@ -164,7 +157,7 @@ const history = () => {
       <StatusBar backgroundColor="white" />
       <View style={styles.inpusView}>
         <Text style={{ fontSize: fonsizeValue, color: "rgb(87,114,168)", paddingRight: 40, }}>{number}</Text>
-        <Text style={{ fontSize: fonsizeValue, color: "rgb(87,114,168)", paddingRight: 40, }}>{lastNumber}</Text>
+        <Text style={{ fontSize: 45, color: "rgb(87,114,168)", paddingRight: 40, opacity: 0.5 }}>{number}</Text>
       </View>
       <View styles={styles.buttonsViewContainer}>
         <View style={styles.buttonsView}>
