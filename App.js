@@ -5,11 +5,16 @@ import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity } fr
 const { width, height } = Dimensions.get("window");
 
 export default function App() {
+  //hook para pegar o input
   const [number, setNumber] = useState("")
+  //hook para o historico
   const [lastNumber, setLastNumber] = useState("")
+  //hook para validacao
   const [isNumber, setIsNumber] = useState()
+  //hook para o ajuste da fonte conforme a screen do device
   const [fonsizeValue, setfonsizeValue] = useState(80)
   
+  //hook effect para ajustar a fonte size citada acima
   useEffect(() => {
     if (number.length > 9) {
       setfonsizeValue(45)
@@ -27,19 +32,25 @@ export default function App() {
     setIsNumber(false)
   }, [])
 
+  //funcao para validacao dos inputs
   const changeNumber = (newNumb) => {
     let length = number.length;
     let endNumber = number[number.length - 1]
     let twoEndNumber = number[number.length - 2]
+    
+    //Validacao com limite de caracteres fixado a 55 numeros
     if (number.length < 55) {
       if (isNumber && !isNaN(newNumb)) {
         setNumber("" + newNumb)
         setIsNumber(false)
         return
       }
+      
+      //Validacao para o numero nao comecar com 0
       if (number === "0") {
         setNumber("" + newNumb)
       }
+      //Validacao para nao conter caracteres especificos para primeiro input
       else if ((number === "" && isNaN(newNumb)) || (number === "-" && isNaN(newNumb))) {
         if (newNumb === "-") {
           setNumber("-")
@@ -48,6 +59,7 @@ export default function App() {
           setNumber("")
         }
       }
+      //Validacao para nao conter caracteres especificos no final do input
       else {
         if (isNaN(endNumber) && isNaN(newNumb)) {
           if (newNumb === ".") {
@@ -75,6 +87,8 @@ export default function App() {
             }
           }
         }
+
+        //Validacao da pontuacao do calculo
         else {
           if (newNumb === ".") {
             let i = length - 1
@@ -104,16 +118,18 @@ export default function App() {
 
 
   
-
+  //Funcao para deletar o input do usuario por completo
   const del = () => {
     setNumber( value => "")
     setLastNumber( value => "")
   }
 
+  //funcao para calculo do input
   const result = () => {
     
     setIsNumber(true)
     try {
+      //Eval e a principal funcao para calculo
       setNumber(
         String(eval(number))
       )
@@ -122,9 +138,10 @@ export default function App() {
       setNumber("Error")
       return setIsNumber(true)
     }
-    
+    //Obs.: Apos um estudo eu poderia colocar a funcao eval em uma promise e tratar os erros da funcao como validacao para o usuario, mas valeu a pena a logica montada acima
   }
 
+  //Aqui temos a interface da calculadora, com as chamadas dos hooks criados acima
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="white" />
@@ -173,6 +190,7 @@ export default function App() {
   );
 }
 
+//Aqui se encontra a estilizacao da aplicacao
 const styles = StyleSheet.create({
   container: {
     flex: 1,
